@@ -21,8 +21,8 @@ if(($_SERVER["REQUEST_METHOD"] == "POST") && isset($_POST["crear-usuario"]) && (
     $email = $_POST["email"];
     $contra = password_hash($_POST["contra"], PASSWORD_DEFAULT);
     $telefono = $_POST["telefono"];
-    $su = $_POST["su"];
-    $su = ($su) ? 1 : 0;
+    if(!isset($_POST["su"])) 
+        $su = 1;
     $con = conectarBD();
     $sql = "INSERT INTO `usuarios` (`id`, `nombre`, `apellido`, `telefono`, `email`, `contra`, `comunidades`, `su`) VALUES (NULL,'".$nombre."', '".$apellido."', '".$telefono."', '".$email."', '".$contra."', '', '".$su."');";
     if(mysqli_query($con, $sql))

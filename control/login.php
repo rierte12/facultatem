@@ -2,8 +2,8 @@
 require __DIR__ . "/include/header.control.php";
 if(($_SERVER["REQUEST_METHOD"] == "POST") && isset($_POST["iniciar-sesion"])){
     $con = conectarBD(); 
-    $contra = $_POST["contra"]; 
-    $usuario = $_POST["usuario"]; 
+    $contra =  noSQLInj($_POST["contra"]); 
+    $usuario =  noSQLInj($_POST["usuario"]); 
     $sql = "SELECT *  FROM `usuarios` WHERE `email`='".$usuario."';";
     $resultado = mysqli_query($con, $sql);
     $row = mysqli_fetch_array($resultado);

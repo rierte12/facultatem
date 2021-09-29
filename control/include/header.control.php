@@ -1,6 +1,8 @@
 <?php
-session_name('facultatem');
-session_start();
+if(!isset($_SESSION)){
+    session_name('facultatem');
+    session_start();
+}
 require_once __DIR__ . '/../../ext/funciones.php';
 echo <<<HTML
     <link rel="stylesheet" href="/control/styles/font-awesome/css/all.css">

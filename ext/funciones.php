@@ -1,5 +1,5 @@
 <?php
-    function paginaError($errnmbr, $errmsg) {
+    function paginaError($errnmbr, $errmsg, $http) {
         echo <<<HTML
             <body>
                 <div id="errorpag">
@@ -14,13 +14,16 @@
                 </div>
             </body>
         HTML;
+        http_response_code($http); 
     }
     function conectarBD() {
         $conexion = mysqli_connect('localhost', 'facultatem', 'c91prwu7', 'facultatem');
         if(!$conexion)
-            die(paginaError("25", "Conexion fallida a la base de datos"));
+            die(paginaError("25", "Conexion fallida a la base de datos", 500));
         else
             return $conexion;
     }
-
+    function noSQLInj($str) {
+        return $str;
+    }
 ?>

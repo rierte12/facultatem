@@ -181,3 +181,9 @@ form#formulario-nuevo-usuario {
   margin-top: 50px;
   margin: 50px auto;
 }
+
+.accion {
+	width: 50%;
+	margin: auto;
+	margin-top: 50px;
+}
