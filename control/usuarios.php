@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . "/include/header.control.php";
 if(!$_SESSION["su"]) {
-    paginaError("12", "No tienes permiso para acceder a esta página");
+    paginaError("12", "No tienes permiso para acceder a esta página", 500);
     exit;
 }
 if(($_SERVER["REQUEST_METHOD"] == "POST") && isset($_POST["borrar-usuario"]) && ($_SESSION["su"])){
@@ -22,6 +22,8 @@ if(($_SERVER["REQUEST_METHOD"] == "POST") && isset($_POST["crear-usuario"]) && (
     $contra = password_hash($_POST["contra"], PASSWORD_DEFAULT);
     $telefono = $_POST["telefono"];
     if(!isset($_POST["su"])) 
+        $su = 0;
+    else
         $su = 1;
     $con = conectarBD();
     $sql = "INSERT INTO `usuarios` (`id`, `nombre`, `apellido`, `telefono`, `email`, `contra`, `comunidades`, `su`) VALUES (NULL,'".$nombre."', '".$apellido."', '".$telefono."', '".$email."', '".$contra."', '', '".$su."');";
@@ -47,15 +49,16 @@ function ensenaUsuario() {
     echo '</tr>';
     while ($row = mysqli_fetch_assoc($resultado)) {
         echo '<tr>';
-        echo '<td>'.$row["id"].'</td>';
-        echo '<td>'.$row["nombre"].'</td>';
-        echo '<td>'.$row["apellido"].'</td>';
-        echo '<td><a href="mailto:'.$row["email"].'"</a>'.$row["email"].'</td>';
-        echo '<td><a href="tel:'.$row["telefono"].'"</a>'.$row["telefono"].'</td>';
-        echo '<td>';
+        echo '<td id="id-'.$row["id"].'">'.$row["id"].'</td>';
+        echo '<td id="nombre-'.$row["id"].'">'.$row["nombre"].'</td>';
+        echo '<td id="apellido-'.$row["id"].'">'.$row["apellido"].'</td>';
+        echo '<td id="email-'.$row["id"].'"><a href="mailto:'.$row["email"].'"</a>'.$row["email"].'</td>';
+        echo '<td id="telefono-'.$row["id"].'"><a href="tel:'.$row["telefono"].'"</a>'.$row["telefono"].'</td>';
+        echo '<td id="su-'.$row["id"].'">';
         echo ($row["su"]) ? "Si" : "No";
         echo '</td>';
         echo ($row["su"]) ? '<td>No es posible borrar</td>' : '<td><form method="post" action=""><input type="hidden" name="id" value="'.$row["id"].'"><button type="submit" name="borrar-usuario" class="btn btn-danger">Borrar</button></form>';
+        echo '<td><button class="nobtn" onclick="editarUsuario('.$row["id"].')"><i class="fas fa-user-edit"></i></button></td>';
         echo '</tr>';
     }
     echo '</table>';
@@ -63,30 +66,44 @@ function ensenaUsuario() {
     mysqli_close($con);
 }
 
-function editaUsuario() {
-    if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["edita-usuario"]) &&($_SESSION["su"])) {
+if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["editar-usuario"]) && ($_SESSION["su"])) {
+    $con = conectarBD();
+    if(!isset($_POST["su"])) 
+            $su = 0;
+        else
+            $su = 1;
+    if($_POST["contra"] != "")   
+        $sql = "UPDATE usuarios SET nombre = '".$_POST["nombre"]."', apellido = '".$_POST["apellido"]."', email= '".$_POST["email"]."', telefono = ".$_POST["telefono"].", su = ".$su.", contra='".password_hash($_POST["contra"], PASSWORD_DEFAULT)."' WHERE id = ".$_POST["id"]."";
+    else
+        $sql = "UPDATE usuarios SET nombre = '".$_POST["nombre"]."', apellido = '".$_POST["apellido"]."', email= '".$_POST["email"]."', telefono = ".$_POST["telefono"].", su = ".$su." WHERE id = ".$_POST["id"]."";
+    if(mysqli_query($con, $sql))
+        $msg = 'Usuario editado correctamente';
+    else
+        $msg = 'Error 25: No se ha podido editar el usuario';
+    echo mysqli_error($con);
+    mysqli_close($con);
+    
 
-    }
 }
+    
 ?>
 <head>
     <title> Usuarios | Facultatem</title>
 </head>
-<h2> Centro de usuarios</h2>;
+<h2> Centro de usuarios</h2>
 
 <div class="usuarios actual">
     <?php ensenaUsuario()?>
-    <?php editaUsuario() ?>
 </div>
 <div class="opcion">
     
 </div>
-<div class="accion">
+<div id="accion">
     <button id="anadir-usuario">Añadir usuario</button>
 </div>
-<!-- <div id="formulario-nuevo-usuario"> -->
-    <form id="formulario-nuevo-usuario" action="" method="POST">
-        <i id="cancelar-formulario-nuevo-usuario" class="fas fa-times"></i>
+<div id="pantalla-completa" style="display:none">
+    <form id="formulario-nuevo-usuario" style="display:none" action="" method="POST">
+        <div align="right"><i id="cancelar-formulario-nuevo-usuario" class="fas fa-times"></i></div>
         <label>Nombre</label>
         <br>
         <input type="text" name="nombre" required></input>
@@ -101,19 +118,49 @@ function editaUsuario() {
         <br>
         <label>Contraseña</label>
         <br>
-        <input type="text" name="contra" required></input>
+        <input type="text" required></input>
         <br>
         <label>Telefono</label>
         <br>
         <input type="tel" name="telefono" size="9" required></input>
         <br>
-        <label>Administrador</label>
         <input name="su" type="checkbox" value="1">
+        <label>Administrador</label>
         <br>
-        <button type="submit" name="crear-usuario" class="btn btn-danger">Crear usuario</button>
+        <button id="form-but-env" type="submit" name="crear-usuario" class="btn btn-danger">Crear usuario</button>
         <?php echo (isset($msg)) ? $msg : ""?>
     </form>
-<!--</div> -->
+    <form id="formulario-editar-usuario" style="display:none" action="" method="POST">
+        <div align="right"><i id="cancelar-formulario-editar-usuario" class="fas fa-times"></i></div>
+        <label>Nombre</label>
+        <br>
+        <input id="editar-nombre" type="text" name="nombre" value="" required></input>
+        <br>
+        <label>Apellido</label>
+        <br>
+        <input id="editar-apellido" type="text" name="apellido" required></input>
+        <br>
+        <label>Email</label>
+        <br>
+        <input id="editar-email"type="email" name="email" required></input>
+        <br>
+        <label>Contraseña</label>
+        <br>
+        <input name="contra" type="password" ></input>
+        <br>
+        <label>Telefono</label>
+        <br>
+        <input id="editar-telefono" type="tel" name="telefono" size="9" required></input>
+        <br>
+        <input id="editar-su" name="su" type="checkbox" value="1">
+        <label>Administrador</label>
+        <br>
+        <input id="id" type="number" name="id" hidden required></input>
+        <button id="form-but-env" type="submit" name="editar-usuario" class="btn btn-danger">Editar Usuario</button>
+        <?php echo (isset($msg)) ? $msg : ""?>
+    </form>
+</div>
 <footer>
     <script src="/control/js/usuarios.js"></script>
+    <div class="copy">Copyright <?php echo date("Y"); ?> Facultatem</div>
 </footer>
