@@ -1,5 +1,6 @@
 <?php
 require __DIR__ . "/include/header.control.php";
+
 if(!$_SESSION["su"]) {
     paginaError("12", "No tienes permiso para acceder a esta página", 500);
     exit;
@@ -118,7 +119,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["editar-usuario"]) && ($
         <br>
         <label>Contraseña</label>
         <br>
-        <input type="text" required></input>
+        <input type="text" name="contra" required></input>
         <br>
         <label>Telefono</label>
         <br>
@@ -146,7 +147,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["editar-usuario"]) && ($
         <br>
         <label>Contraseña</label>
         <br>
-        <input name="contra" type="password" ></input>
+        <input name="contra" type="password" placeholder="(Sin modificar)"></input>
         <br>
         <label>Telefono</label>
         <br>
@@ -162,5 +163,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["editar-usuario"]) && ($
 </div>
 <footer>
     <script src="/control/js/usuarios.js"></script>
+    <script src="/control/js/main.js"></script>
     <div class="copy">Copyright <?php echo date("Y"); ?> Facultatem</div>
 </footer>

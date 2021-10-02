@@ -1,4 +1,6 @@
 <?php
-$comunidad = $_GET['com'];
-echo $comunidad;
+if(isset($_GET['com'])) {
+    $comunidad = $_GET['com'];
+    echo $comunidad;
+}
 ?>

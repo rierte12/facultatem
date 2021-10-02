@@ -1,9 +1,16 @@
  <?php
 require __DIR__ . "/include/header.control.php";
+if($_SERVER["REQUEST_METHOD"] == "GET") {
+    if(isset($_SESSION["logeado"])){
+            echo '<script>
+            window.onload = window.history.back()
+            </script>';
+    }
+}
 if(($_SERVER["REQUEST_METHOD"] == "POST") && isset($_POST["iniciar-sesion"])){
     $con = conectarBD(); 
-    $contra =  noSQLInj($_POST["contra"]); 
-    $usuario =  noSQLInj($_POST["usuario"]); 
+    $contra =  $_POST["contra"]; 
+    $usuario = $_POST["usuario"]; 
     $sql = "SELECT *  FROM `usuarios` WHERE `email`='".$usuario."';";
     $resultado = mysqli_query($con, $sql);
     $row = mysqli_fetch_array($resultado);
@@ -19,7 +26,7 @@ if(($_SERVER["REQUEST_METHOD"] == "POST") && isset($_POST["iniciar-sesion"])){
             $_SESSION["telefono"] = $row["telefono"];
             $_SESSION["comunidades"] = $row["comunidades"];
             $_SESSION["su"] = $row["su"];
-            $_SESSION["iniciado"] = "si";
+            $_SESSION["logeado"] = 1;
             if(!isset($_GET["url"]))
                 header("Location: /control/");
             else
@@ -35,7 +42,7 @@ if(($_SERVER["REQUEST_METHOD"] == "POST") && isset($_POST["iniciar-sesion"])){
 </head>
 <body id="login">
     <div class="login">
-        <h2>Inicar Sesión</h2>
+        <h3>Inicar Sesión</h3>
         <form class="login-form" action="" method="POST">
             <label><i class="fa fa-at"></i></label>
             <input type="email" name="usuario" placeholder="Correo electrónico" required></input>

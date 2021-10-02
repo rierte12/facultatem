@@ -1,6 +1,8 @@
 <?php
     function paginaError($errnmbr, $errmsg, $http) {
         echo <<<HTML
+            <head>
+                <title>E$errnmbr: $errmsg | Facultatem</title>
             <body>
                 <div id="errorpag">
                 <div class="error">

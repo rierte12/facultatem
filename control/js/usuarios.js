@@ -19,7 +19,6 @@ document.getElementById('cancelar-formulario-editar-usuario').onclick = function
 function editarUsuario(id) {
     document.getElementById("pantalla-completa").style.setProperty('display', '');
     document.getElementById("formulario-editar-usuario").style.setProperty('display', '');
-    console.log("iobani %d", id);
     document.getElementById("editar-nombre").value = document.getElementById("nombre-"+ id).innerText;
     document.getElementById("editar-apellido").value = document.getElementById("apellido-"+ id).innerText;
     document.getElementById("editar-email").value = document.getElementById("email-"+ id).innerText;
@@ -27,6 +26,7 @@ function editarUsuario(id) {
     document.getElementById("id").value = document.getElementById("id-"+ id).innerText;
     if(document.getElementById("su-" + id) != "No")
         document.getElementById("editar-su").checked = true;
-
-  
+    else {
+        document.getElementById("editar-su").checked = false;
+    }
 }
