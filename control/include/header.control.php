@@ -3,8 +3,6 @@ require_once __DIR__ . '/../../ext/funciones.php';
 if(!isset($_SESSION)){
     session_name('facultatem');
     session_start();
-    $_SESSION["logeado"] = 0;
-    $_SESSION["su"] = 0;
 }
 echo <<<HTML
     <head>
@@ -12,11 +10,9 @@ echo <<<HTML
         <link rel="stylesheet" href="/control/styles/all.css">
     </head>
     HTML;
-if(!$_SESSION["logeado"])
-    if((substr($_SERVER['REQUEST_URI'], 0, 18) != "/control/login.php") && substr($_SERVER['REQUEST_URI'], 0, 15) != "/control/login") {
-        header("location: /control/login.php?url=".urlencode($_SERVER['REQUEST_URI']));
-}
-if($_SESSION["logeado"]) {
+if(!isset($_SESSION["logeado"]) && (substr($_SERVER['REQUEST_URI'], 0, 14) != "/control/login"))
+        header("Location: /control/login.php?url=".urlencode($_SERVER['REQUEST_URI']));
+if(isset($_SESSION["logeado"])) {
     echo '
         <body>
         <ul id="barra-user">

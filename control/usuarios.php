@@ -1,9 +1,10 @@
 <?php
 require __DIR__ . "/include/header.control.php";
-
-if(!$_SESSION["su"]) {
-    paginaError("12", "No tienes permiso para acceder a esta página", 500);
-    exit;
+if($_SESSION["logeado"]) {
+    if(!$_SESSION["su"]) {
+        paginaError("12", "No tienes permiso para acceder a esta página", 403);
+        exit;
+    }
 }
 if(($_SERVER["REQUEST_METHOD"] == "POST") && isset($_POST["borrar-usuario"]) && ($_SESSION["su"])){
     $con = conectarBD();
@@ -161,8 +162,5 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["editar-usuario"]) && ($
         <?php echo (isset($msg)) ? $msg : ""?>
     </form>
 </div>
-<footer>
-    <script src="/control/js/usuarios.js"></script>
-    <script src="/control/js/main.js"></script>
-    <div class="copy">Copyright <?php echo date("Y"); ?> Facultatem</div>
-</footer>
+<?php require __DIR__ . "/include/footer.control.php"; ?>
+

@@ -1,12 +1,14 @@
- <?php
+<?php
 require __DIR__ . "/include/header.control.php";
 if($_SERVER["REQUEST_METHOD"] == "GET") {
-    if(isset($_SESSION["logeado"])){
+    if($_SESSION["logeado"]){
             echo '<script>
             window.onload = window.history.back()
             </script>';
     }
 }
+if(isset($_SESSION["logeado"]))
+    echo 'Si logeado <br><br>';
 if(($_SERVER["REQUEST_METHOD"] == "POST") && isset($_POST["iniciar-sesion"])){
     $con = conectarBD(); 
     $contra =  $_POST["contra"]; 
@@ -57,4 +59,5 @@ if(($_SERVER["REQUEST_METHOD"] == "POST") && isset($_POST["iniciar-sesion"])){
             <button type="submit" name="iniciar-sesion">Submit</button>
         </form>
     </div>
+    <?php require __DIR__ . "/include/footer.control.php"; ?>
 </body>
