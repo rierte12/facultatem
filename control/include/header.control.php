@@ -13,13 +13,6 @@ echo <<<HTML
 if(!isset($_SESSION["logeado"]) && (substr($_SERVER['REQUEST_URI'], 0, 14) != "/control/login"))
         header("Location: /control/login.php?url=".urlencode($_SERVER['REQUEST_URI']));
 if(isset($_SESSION["logeado"])) {
-    echo '
-        <body>
-        <ul id="barra-user">
-            <li id="logout"><a href="/control/logout.php">Cerrar Session</a></li>
-            <li class="nom-usuario">'.$_SESSION["nombre"].'</li>
-            <li id="hora"class="hora"></li>
-        </ul>
-    ';
+    include_once __DIR__ . '/menu-usuario.php';
 }
 ?>

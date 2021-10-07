@@ -92,6 +92,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["editar-usuario"]) && ($
 <head>
     <title> Usuarios | Facultatem</title>
 </head>
+<body id="usuarios">
 <h2> Centro de usuarios</h2>
 
 <div class="usuarios actual">

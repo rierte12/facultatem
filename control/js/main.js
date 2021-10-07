@@ -15,3 +15,13 @@ function erlojua() {
     setTimeout(erlojua, 1000);
 }
 erlojua();
+
+//Menu movil
+document.getElementById("mostrar-menu").onclick = function() {
+    var x = document.getElementById("submenu-normal");
+    if (x.style.display === "block") {
+      x.style.display = "none";
+    } else {
+      x.style.display = "block";
+    }
+}
