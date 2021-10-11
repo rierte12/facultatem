@@ -192,18 +192,27 @@ a:visited {
     padding-left: 5px;
     padding-right: 5px;    
   }
-  li:hover {
-    float: right;
-    display: inline;
-    margin-left: 5px;
-    margin-right: 5px;
-    padding-left: 5px;
-    padding-right: 5px;  
-    color: black;
-  }
   #barra-user-movil {
     display: none;
   }
+  #barra-navegacion {
+    text-align: center;
+    height: auto;
+    color: white;
+    background: gray;
+    font-size: 40px;
+  }
+  #barra-navegacion a {
+    color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  #barra-navegacion a:hover {
+    color: black;
+    background: darkgray;
+}
   /* LOGIN */
   body#login {
     background-image: url("/control/img/login-bg.jpg");
@@ -452,6 +461,41 @@ a:visited {
     bottom: 0;
     position: fixed;
   }
+  /* INDEX */
+  .bienvenida-usuario {
+    text-align: center;
+    padding-top: 3vh;
+    padding-bottom: 3vh;
+    background: green;
+    color: white;
+    font-size: 4em;
+  }
+  #menu-index {
+    background-image: linear-gradient(to right bottom, #d16bbd, #bd80d4, #a892e3, #94a2eb, #87b0ec, #72bcf3, #5dc7f6, #4bd1f4, #00def0, #00eae0, #00f4c4, #5ffb9f);
+    height: 72vh;
+  }
+  #menu-index i {
+    margin-top: 25px;
+  }
+  #submenu-bar {
+    text-align: center;
+    padding-top: 4vh;
+    font-size: 4em;
+  }
+  .menu-index-nombre {
+    font-size: 60px;
+    margin-top: 90px;
+  }
+  .box {
+    font-size: 120px;
+    background: black;
+    display: inline-table;
+    width: 60%;
+    height: 200px;
+    padding: 50px 20px 50px 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
   /* USUARIOS */
   #usuarios input {
     margin-top: 50px;
@@ -475,7 +519,7 @@ a:visited {
     margin-top: 50px;
     margin: 50px auto;
     background-color: white;
-}
+  }
   #accion {
   margin-top: 50px !important;
   width: 50%;
@@ -490,8 +534,13 @@ a:visited {
     height: 100vh;
   }
  /*MENU USUARIO*/
-  #barra-user {
+  #barra-user, #barra-navegacion {
 	  display: none;
+  }
+  #barra-user-movil {
+	  background: black;
+    border-bottom: 10px solid white;
+    display: flow-root;
   }
   #mostrar-menu {
     font-size: 80px;
@@ -500,21 +549,29 @@ a:visited {
     margin-top: 15px;
     color: white;
     background: black;
+    float: right;
   }
   #submenu-normal a {
       display: block;
       font-size: 50px;
       padding-right: 10%;
       color: white;
-      padding-top: 15px;
-      padding-bottom: 15px;
-      border-top: 5px solid white;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      border-bottom: 5px solid white;
   }
   #submenu-normal {
       background-color: black;
       position: inherit;
   }
-  #barra-user-movil {
-	  background: black;
+  
+  button#mostrar-menu-su {
+    font-size: 80px;
+    margin-right: 5%;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    color: red;
+    background: black;
+    float: left;
   }
 }
