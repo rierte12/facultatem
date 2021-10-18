@@ -240,6 +240,16 @@ a:visited {
   #login input {
     width: 65%;
   }
+  .login-error {
+    background: orange;
+    margin-bottom: 10px !important;
+    width: 80%;
+    text-align: center;
+    margin: auto;
+    padding: 5px 0px 5px 0px;
+    border-radius: 6px;
+    font-size: 19px;
+}
 /* INDEX */
   .bienvenida-usuario {
     height: 15vh;
