@@ -7,16 +7,12 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
             </script>';
     }
 }
-if(isset($_SESSION["logeado"]))
-    echo 'Si logeado <br><br>';
 if(($_SERVER["REQUEST_METHOD"] == "POST") && isset($_POST["iniciar-sesion"])){
     $con = conectarBD(); 
     $contra =  $_POST["contra"]; 
     $usuario = $_POST["usuario"]; 
     $stmt = $con->prepare("SELECT * FROM usuarios WHERE email = ?");
     $stmt->bind_param("s", $usuario);
-    //$sql = "SELECT *  FROM `usuarios` WHERE `email`='".$usuario."';";
-    //$resultado = mysqli_query($con, $sql);
     $stmt->execute();
     $row = $stmt->get_result();
     $user = $row->fetch_assoc();
@@ -24,7 +20,6 @@ if(($_SERVER["REQUEST_METHOD"] == "POST") && isset($_POST["iniciar-sesion"])){
     if(!$user)
         $error = "Usuario no encontrado";
     else {
-        echo $user["contra"];
         if(password_verify($contra, $user["contra"])) {
             $_SESSION["userid"] = $user["id"];
             $_SESSION["nombre"] = $user["nombre"];
@@ -40,7 +35,7 @@ if(($_SERVER["REQUEST_METHOD"] == "POST") && isset($_POST["iniciar-sesion"])){
                 header("Location: ".$_GET["url"]);
         }
         else
-            $error = "Contraseña incorrecta";
+            $msg = "Contraseña incorrecta";
     }
 }
 ?>
@@ -57,10 +52,6 @@ if(($_SERVER["REQUEST_METHOD"] == "POST") && isset($_POST["iniciar-sesion"])){
             <label><i class="fa fa-key"></i></label>
             <input type="password" name="contra" placeholder="Contraseña" required></input>
             <br>
-            <?php 
-            if(!empty($error))
-                echo '<div class="login-error">'.$error.'</div>';
-            ?>
             <button type="submit" name="iniciar-sesion">Submit</button>
         </form>
     </div>

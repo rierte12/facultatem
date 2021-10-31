@@ -14,6 +14,7 @@ if(($_SERVER["REQUEST_METHOD"] == "POST") && isset($_POST["borrar-usuario"]) && 
     else
         $msg = 'Error 24: No se ha podido borrar el usuario';
     mysqli_close($con);
+    header("Location: /control/redir.php?ruta=".urlencode($_SERVER['REQUEST_URI']));
 }
 
 if(($_SERVER["REQUEST_METHOD"] == "POST") && isset($_POST["crear-usuario"]) && ($_SESSION["su"])){
@@ -28,12 +29,16 @@ if(($_SERVER["REQUEST_METHOD"] == "POST") && isset($_POST["crear-usuario"]) && (
     else
         $su = 1;
     $con = conectarBD();
-    $sql = "INSERT INTO `usuarios` (`id`, `nombre`, `apellido`, `telefono`, `email`, `contra`, `comunidades`, `su`) VALUES (NULL,'".$nombre."', '".$apellido."', '".$telefono."', '".$email."', '".$contra."', '', '".$su."');";
-    if(mysqli_query($con, $sql))
+    $sql = "INSERT INTO `usuarios` (`nombre`, `apellido`, `telefono`, `email`, `contra`, `su`) VALUES ('".$nombre."', '".$apellido."', '".$telefono."', '".$email."', '".$contra."', '".$su."');";
+    if(mysqli_query($con, $sql)) {
         $msg = 'Usuario creado correctamente';
-    else
+    }
+    else {
         $msg = 'Error 23: No se ha podido crear el usuarios';
+        echo mysqli_error($con);
+    }
     mysqli_close($con);
+    header("Location: /control/redir.php?ruta=".urlencode($_SERVER['REQUEST_URI']));
 }
 function ensenaUsuario() {
     $con = conectarBD();
@@ -84,6 +89,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["editar-usuario"]) && ($
         $msg = 'Error 25: No se ha podido editar el usuario';
     echo mysqli_error($con);
     mysqli_close($con);
+    header("Location: /control/redir.php?ruta=".urlencode($_SERVER['REQUEST_URI']));
     
 
 }
@@ -105,7 +111,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["editar-usuario"]) && ($
     <button id="anadir-usuario">Añadir usuario</button>
 </div>
 <div id="pantalla-completa" style="display:none">
-    <form id="formulario-nuevo-usuario" style="display:none" action="" method="POST">
+    <form class="form-general" id="formulario-nuevo-usuario" style="display:none" action="" method="POST">
         <div align="right"><i id="cancelar-formulario-nuevo-usuario" class="fas fa-times"></i></div>
         <label>Nombre</label>
         <br>
@@ -133,7 +139,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["editar-usuario"]) && ($
         <button id="form-but-env" type="submit" name="crear-usuario" class="btn btn-danger">Crear usuario</button>
         <?php echo (isset($msg)) ? $msg : ""?>
     </form>
-    <form id="formulario-editar-usuario" style="display:none" action="" method="POST">
+    <form class="form-general" id="formulario-editar-usuario" style="display:none" action="" method="POST">
         <div align="right"><i id="cancelar-formulario-editar-usuario" class="fas fa-times"></i></div>
         <label>Nombre</label>
         <br>
@@ -154,9 +160,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["editar-usuario"]) && ($
         <label>Telefono</label>
         <br>
         <input id="editar-telefono" type="tel" name="telefono" size="9" required></input>
-        <br>
-        <input id="editar-su" name="su" type="checkbox" value="1">
-        <label>Administrador</label>
         <br>
         <input id="id" type="number" name="id" hidden required></input>
         <button id="form-but-env" type="submit" name="editar-usuario" class="btn btn-danger">Editar Usuario</button>

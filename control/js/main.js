@@ -25,3 +25,20 @@ document.getElementById("mostrar-menu").onclick = function() {
       x.style.display = "block";
     }
 }
+function nada() {
+  return 0;
+}
+function msg() {
+  var t = 10;
+  var w = 100;
+  while(t != 0) {
+    w = 100 - 10;
+    document.getElementById("pantalla-completa").style.setProperty('display', w + '%');
+    setTimeout(nada(), 1000);
+    t = t-1;
+  }
+}
+document.getElementById('cerrar-mensaje').onclick = function() {
+  document.getElementById("mensaje").style.setProperty('display', 'none');
+  document.getElementById("msg-count").style.setProperty('display', 'none');
+}
